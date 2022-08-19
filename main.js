@@ -3,6 +3,7 @@ import url from 'url'
 // post 
 let database=[]
 let user;
+let user1;
 http.createServer(function(req,res){
     if(req.method == "POST" && req.url == "/create-user"){
         req.setEncoding("utf-8")
@@ -11,10 +12,9 @@ http.createServer(function(req,res){
         });
         req.on("end",()=>{
             database.push(user);
-            console.log(user);
-            
+            console.log(database); 
+            res.end("Your data is stored");
         });
-        res.end("Your data is stored");
     }
 
     //get
@@ -25,22 +25,22 @@ http.createServer(function(req,res){
 
     //put
     if(req.method == "PUT" && req.url == "/update-value"){
-        const userd1=[]
         req.on("data",(data)=>{
-            user=data;
+            user1=data;
         });
         req.on("end",()=>{
-            console.log("Data modified");
-            res.write("Data modified");
-            
+            console.log("Data is modifiying"); 
         });
-        let data1=database.forEach((item)=>{
-            let obj = JSON.parse(item)
-            obj.name=user;
-            JSON.stringify(obj);
+        const obj1=JSON.parse(user1);
+        database.forEach((item)=>{
+            const obj = JSON.parse(item)
+            if(obj1.id == obj.id)
+            {
+                obj.name=obj1.name;
+                obj.role=obj1.role;
+            }
         })
-        userd1.push(data1);
-        res.write(JSON.stringify(userd1));
+        res.write("Data modified");
         res.end();
 
     }
