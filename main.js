@@ -11,6 +11,7 @@ http.createServer(function(req,res){
             user=data;
         });
         req.on("end",()=>{
+            user=JSON.parse(user)
             database.push(user);
             console.log(database); 
             res.end("Your data is stored");
@@ -30,19 +31,18 @@ http.createServer(function(req,res){
         });
         req.on("end",()=>{
             console.log("Data is modifiying"); 
-        });
-        const obj1=JSON.parse(user1);
+            let obj1=JSON.parse(user1);
         database.forEach((item)=>{
-            const obj = JSON.parse(item)
-            if(obj1.id == obj.id)
+            if(obj1.id == item.id)
             {
-                obj.name=obj1.name;
-                obj.role=obj1.role;
+                item.name=obj1.name;
+                item.role=obj1.role;
             }
         })
         res.write("Data modified");
         res.end();
-
+        });
+        
     }
     
 }).listen(8080);
