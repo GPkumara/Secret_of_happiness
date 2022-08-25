@@ -54,7 +54,7 @@ http.createServer(function(req,res){
     }
     if (req.method=="GET" && req.url == "/areas-to-focus")
     {
-        let text=`select * from datas where *<=3 order by date limit 1 ;`
+        let text=`select * from datas order by date desc limit 1 ;`
         client.query(text,(err,data2)=>{
             if (err) throw err;
             console.log("area to focus ",data2);
