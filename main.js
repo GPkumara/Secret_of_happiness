@@ -14,7 +14,8 @@ client.connect((err)=>{
 })
 // create-record
 let user;
-let user1;
+let user1=[];
+let data3=[];
 http.createServer(function(req,res){
     if(req.method == "POST" && req.url == "/create-record")
     {
@@ -54,11 +55,20 @@ http.createServer(function(req,res){
     }
     if (req.method=="GET" && req.url == "/areas-to-focus")
     {
-        let text=`select * from datas order by date desc limit 1 ;`
+        let text=`select * from datas  ORDER by date DESC limit 1;`
         client.query(text,(err,data2)=>{
             if (err) throw err;
-            console.log("area to focus ",data2);
-            res.write(JSON.stringify(data2.rows));
+            data3=data2.rows;
+            data3.forEach((ele)=>{
+                for (const [key, value] of Object.entries(ele)) {
+                    if(value<=3){
+                        user1.push(key,value);
+                    }
+                  }
+            });
+            console.log("area to focus ",user1);
+            res.write(JSON.stringify(user1));
+        
             res.end()
         })
     }
